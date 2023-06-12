@@ -1,11 +1,18 @@
+import 'dotenv/config';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CustomerModule } from './customer/customer.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { redisConfig } from './modules/customer/config/redis.config';
+
+import { CustomerModule } from './modules/customer/customer.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [CustomerModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    RedisModule.forRoot({
+      config: redisConfig,
+    }),
+    CustomerModule,
+    AuthModule,
+  ],
 })
 export class AppModule {}
